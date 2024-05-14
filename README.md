@@ -47,7 +47,7 @@ This SDL implementation of Conway's Game of Life includes several features desig
 
 Clone the project using:
 ```bash
-git clone link
+git clone https://github.com/N91489/Conways_GameOfLife.git
 ```
 Enter into the project folder using:
 ```bash
@@ -75,4 +75,4 @@ make build
 |q| Quit the application.|
 ---
 # License
-This project is licensed under the MIT License - see the [LICENSE](l) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/N91489/Conways_GameOfLife/blob/main/LICENSE) file for details.
