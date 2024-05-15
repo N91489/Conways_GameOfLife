@@ -21,7 +21,7 @@ This SDL implementation of Conway's Game of Life includes several features desig
 
 * Random Initial Grid: The initial state of the grid is randomly generated, providing a unique starting point for each simulation.
 
-* Pause/Play Functionality: Users can pause and resume the simulation at any time using the `p` key. This allows for detailed inspection of the grid's state at any given moment.
+* Pause/Play Functionality: Users can pause and resume the simulation at any time using the `space` key. This allows for detailed inspection of the grid's state at any given moment.
   
 * Interactive Grid: Users can `left click` on the grid to toggle the state of individual cells, enabling the creation of custom initial patterns.
   
@@ -68,7 +68,7 @@ make build
 
 |Keys| Functions|
 |-|-----------------------------|
-|p| Pause/Resume the simulation.|
+|Space Bar| Pause/Resume the simulation.|
 |Left Mouse Button| Toggle the state of a cell.|
 |Up Arrow|Increase the simulation speed.|
 |Down Arrow| Decrease the simulation speed.|
