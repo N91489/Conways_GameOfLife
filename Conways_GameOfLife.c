@@ -105,7 +105,7 @@ void UpdateGrid()
 }
 
 // Rendering, Game Loop, Event Handling, Audio
-int main()
+int main(int argc, char **argv)
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
