@@ -79,29 +79,24 @@ void RuleCheckGrid()
             }
 
             // Apply Conways Game of Life Rules Onto a New Map
-            if (CurrentGrid[j * GRID_WIDTH + i] == 1)
+            switch (neighbour)
             {
-                if (neighbour < 2 || neighbour > 3)
-                {
-                    NewGrid[j * GRID_WIDTH + i] = 0;
-                }
-            }
-            else if (neighbour == 3)
-            {
-                NewGrid[j * GRID_WIDTH + i] = 1;
+            case 2:
+                NewGrid[j * GRID_WIDTH + i] = CurrentGrid[j * GRID_WIDTH + i];
+                break;
+            case 3:
+                NewGrid[j * GRID_WIDTH + i] = true;
+                break;
+            default:
+                NewGrid[j * GRID_WIDTH + i] = false;
+                break;
             }
         }
     }
-}
-
-// Apply New Map to Current Map
-void UpdateGrid()
-{
     // Copy NewGrid to CurrentGrid
-    for (int i = 0; i < (GRID_WIDTH * GRID_HEIGHT); i++)
-    {
-        CurrentGrid[i] = NewGrid[i];
-    }
+    bool *temp = CurrentGrid;
+    CurrentGrid = NewGrid;
+    NewGrid = temp;
 }
 
 // Rendering, Game Loop, Event Handling, Audio
@@ -148,7 +143,7 @@ int main(int argc, char **argv)
             if (event.type == SDL_MOUSEBUTTONDOWN)
             {
                 SDL_GetMouseState(&mX, &mY);
-                NewGrid[(mY / CELL_SIZE) * GRID_WIDTH + (mX / CELL_SIZE)] = 1;
+                CurrentGrid[(mY / CELL_SIZE) * GRID_WIDTH + (mX / CELL_SIZE)] = 1;
             }
 
             // Keyboard Key Down Event
@@ -206,9 +201,6 @@ int main(int argc, char **argv)
         {
             RuleCheckGrid();
         }
-
-        // Apply New Map
-        UpdateGrid();
 
         // Control Speed of Game
         SDL_Delay(Speed);
