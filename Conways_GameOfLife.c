@@ -93,6 +93,7 @@ void RuleCheckGrid()
             }
         }
     }
+    
     // Copy NewGrid to CurrentGrid
     bool *temp = CurrentGrid;
     CurrentGrid = NewGrid;
