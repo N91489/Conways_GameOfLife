@@ -6,10 +6,10 @@
 #define OUT_OF_SCREEN_SCALE 2
 #define CELL_SIZE 5
 
-int SCREEN_WIDTH, SCREEN_HEIGHT, GRID_WIDTH, GRID_HEIGHT, VIEW_WIDTH, VIEW_HEIGHT, i, j;
+int SCREEN_WIDTH, SCREEN_HEIGHT, GRID_WIDTH, GRID_HEIGHT, VIEW_WIDTH, VIEW_HEIGHT;
 
-bool **CurrentGrid;
-bool **NewGrid;
+bool *CurrentGrid;
+bool *NewGrid;
 
 // Set Global Values According To System Specifications
 void SetGlobalValues()
@@ -27,25 +27,19 @@ void SetGlobalValues()
     VIEW_WIDTH = (SCREEN_WIDTH / OUT_OF_SCREEN_SCALE);
     VIEW_HEIGHT = (SCREEN_HEIGHT / OUT_OF_SCREEN_SCALE);
 
-    // Dynamically Initalising Array
-    CurrentGrid = malloc(GRID_WIDTH * sizeof(bool *));
-    NewGrid = malloc(GRID_WIDTH * sizeof(bool *));
-
-    for (i = 0; i < GRID_WIDTH; i++)
-    {
-        CurrentGrid[i] = malloc(GRID_HEIGHT * sizeof(bool));
-        NewGrid[i] = malloc(GRID_HEIGHT * sizeof(bool));
-    }
+    // Dynamically Initalising Array (2D Indexing Method Used: arr[y * width + x];)
+    CurrentGrid = malloc((GRID_WIDTH * GRID_HEIGHT) * sizeof(bool));
+    NewGrid = malloc((GRID_WIDTH * GRID_HEIGHT) * sizeof(bool));
 }
 
 // Generate A Map With Random Boolean Values For Each Cell
 void RandInitGrid()
 {
-    for (i = 0; i < GRID_WIDTH; i++)
+    for (int i = 0; i < GRID_WIDTH; i++)
     {
-        for (j = 0; j < GRID_HEIGHT; j++)
+        for (int j = 0; j < GRID_HEIGHT; j++)
         {
-            CurrentGrid[i][j] = rand() % 2;
+            CurrentGrid[j * GRID_WIDTH + i] = rand() % 2;
         }
     }
 }
@@ -54,9 +48,9 @@ void RandInitGrid()
 void RuleCheckGrid()
 {
     // Visit Each Cell
-    for (i = 0; i < GRID_WIDTH; i++)
+    for (int i = 0; i < GRID_WIDTH; i++)
     {
-        for (j = 0; j < GRID_HEIGHT; j++)
+        for (int j = 0; j < GRID_HEIGHT; j++)
         {
             int neighbour = 0;
 
@@ -75,7 +69,7 @@ void RuleCheckGrid()
                         if (newX >= 0 && newX < GRID_WIDTH && newY >= 0 && newY < GRID_HEIGHT)
                         {
                             // Check Neigbour Cell Alive or Not
-                            if (CurrentGrid[newX][newY] == 1)
+                            if (CurrentGrid[newY * GRID_WIDTH + newX] == 1)
                             {
                                 neighbour++;
                             }
@@ -85,16 +79,16 @@ void RuleCheckGrid()
             }
 
             // Apply Conways Game of Life Rules Onto a New Map
-            if (CurrentGrid[i][j] == 1)
+            if (CurrentGrid[j * GRID_WIDTH + i] == 1)
             {
                 if (neighbour < 2 || neighbour > 3)
                 {
-                    NewGrid[i][j] = 0;
+                    NewGrid[j * GRID_WIDTH + i] = 0;
                 }
             }
             else if (neighbour == 3)
             {
-                NewGrid[i][j] = 1;
+                NewGrid[j * GRID_WIDTH + i] = 1;
             }
         }
     }
@@ -104,22 +98,10 @@ void RuleCheckGrid()
 void UpdateGrid()
 {
     // Copy NewGrid to CurrentGrid
-    for (int i = 0; i < GRID_WIDTH; i++)
+    for (int i = 0; i < (GRID_WIDTH * GRID_HEIGHT); i++)
     {
-        for (int j = 0; j < GRID_HEIGHT; j++)
-        {
-            CurrentGrid[i][j] = NewGrid[i][j];
-        }
+        CurrentGrid[i] = NewGrid[i];
     }
-}
-
-void FreeMemory(bool **arr)
-{
-    for (i = 0; i < GRID_WIDTH; i++)
-    {
-        free(arr[i]);
-    }
-    free(arr);
 }
 
 // Rendering, Game Loop, Event Handling, Audio
@@ -166,7 +148,7 @@ int main()
             if (event.type == SDL_MOUSEBUTTONDOWN)
             {
                 SDL_GetMouseState(&mX, &mY);
-                NewGrid[(mX / CELL_SIZE)][(mY / CELL_SIZE)] = 1;
+                NewGrid[(mY / CELL_SIZE) * GRID_WIDTH + (mX / CELL_SIZE)] = 1;
             }
 
             // Keyboard Key Down Event
@@ -203,7 +185,7 @@ int main()
             for (int j = 0; j < GRID_HEIGHT; j++)
             {
 
-                if (CurrentGrid[i][j] == 1)
+                if (CurrentGrid[j * GRID_WIDTH + i] == 1)
                 {
                     SDL_Rect cell = {i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE};
                     SDL_RenderFillRect(renderer, &cell);
@@ -236,7 +218,7 @@ int main()
     SDL_FreeWAV(wavB);
     SDL_CloseAudioDevice(speaker);
     SDL_Quit();
-    FreeMemory(CurrentGrid);
-    FreeMemory(NewGrid);
+    free(CurrentGrid);
+    free(NewGrid);
     return 0;
 }
