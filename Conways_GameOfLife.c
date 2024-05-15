@@ -177,7 +177,7 @@ int main()
                 case SDLK_q:
                     Wrun = false;
                     break;
-                case SDLK_p:
+                case SDLK_SPACE:
                     (Lrun == true) ? (Lrun = false) : (Lrun = true);
                     (Astate == false) ? (Astate = true) : (Astate = false);
                     break;
