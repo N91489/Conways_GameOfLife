@@ -38,6 +38,8 @@ This SDL implementation of Conway's Game of Life includes several features desig
   
 * Boolean Grid Efficiency: The grid is implemented using boolean values, leading to less consumption of memory.
 
+* 2D Array Implemtation Using 1D Array: The grid uses dynamic 1D array to Implement 2D array, negating the use of pointer array pointing to another pointer
+
 * Clean Exit and Memory Management: The application ensures all allocated memory is properly freed upon exit, preventing memory leaks.
 ***
 
