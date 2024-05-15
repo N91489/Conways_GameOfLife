@@ -55,7 +55,7 @@ cd Conways_GameOfLife
 ```
 
 ### 2. Build the project:
-Ensure you have any if the C compiler, `gcc`, `clang`, `minigw` or `cygwin` installed on your system. The provided `Makefile` will handle the compilation and linking with the SDL2 library.
+Ensure you have any of the C compiler, `gcc`, `clang`, `minigw` or `cygwin` installed on your system. The provided `Makefile` will handle the compilation and linking with the SDL2 library.
 ```bash
 make build
 ```
